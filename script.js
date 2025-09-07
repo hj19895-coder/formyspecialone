@@ -129,3 +129,11 @@ function updateTimer() {
 
 setInterval(updateTimer, 1000);
 updateTimer();
+
+document.querySelectorAll('.paper').forEach((paperEl, i) => {
+  const paper = new Paper();
+  paper.init(paperEl);
+  paperEl.style.top = `${40 + i * 40}px`;
+  paperEl.style.left = `${40 + i * 40}px`;
+});
+
