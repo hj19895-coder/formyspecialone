@@ -71,10 +71,49 @@ class Paper {
       this.holdingPaper = false;
       this.rotating = false;
     });
+    // Touch events for mobile devices
+    document.addEventListener('touchmove', (e) => {
+  if (!this.holdingPaper) return;
+  e.preventDefault(); // Prevent scrolling while dragging
+  const touch = e.touches[0];
+  this.mouseX = touch.clientX;
+  this.mouseY = touch.clientY;
+
+  this.velX = this.mouseX - this.prevMouseX;
+  this.velY = this.mouseY - this.prevMouseY;
+
+  if (!this.rotating) {
+    this.currentPaperX += this.velX;
+    this.currentPaperY += this.velY;
+  }
+  this.prevMouseX = this.mouseX;
+  this.prevMouseY = this.mouseY;
+
+  paper.style.transform = `translateX(${this.currentPaperX}px) translateY(${this.currentPaperY}px) rotateZ(${this.rotation}deg)`;
+});
+  
+    paper.addEventListener('touchstart', (e) => {
+      if (this.holdingPaper) return;
+      this.holdingPaper = true;
+  
+      paper.style.zIndex = highestZ;
+      highestZ += 1;
+  
+      const touch = e.touches[0];
+      this.mouseTouchX = touch.clientX;
+      this.mouseTouchY = touch.clientY;
+      this.prevMouseX = touch.clientX;
+      this.prevMouseY = touch.clientY;
+    });
+  
+    window.addEventListener('touchend', () => {
+      this.holdingPaper = false;
+      this.rotating = false;
+    });
   }
 }
 
-const papers = Array.from(document.querySelectorAll('.paper'));
+var papers = Array.from(document.querySelectorAll('.paper'));
 
 papers.forEach(paper => {
   const p = new Paper();
