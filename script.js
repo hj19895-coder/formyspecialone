@@ -17,7 +17,7 @@ class Paper {
 
   init(paper) {
     // Mouse events
-    paper.addEventListener('mousemove', (e) => {
+    document.addEventListener('mousemove', (e) => {
       if (!this.holdingPaper) return;
       if (!this.rotating) {
         this.mouseX = e.clientX;
@@ -38,7 +38,7 @@ class Paper {
         `translateX(${this.currentPaperX}px) translateY(${this.currentPaperY}px) rotateZ(${this.rotation}deg)`;
     });
 
-    paper.addEventListener('mousedown', (e) => {
+    document.addEventListener('mousedown', (e) => {
       if (this.holdingPaper) return;
       this.holdingPaper = true;
 
@@ -61,7 +61,7 @@ class Paper {
     });
 
     // Touch events for mobile devices
-    paper.addEventListener('touchmove', (e) => {
+    document.addEventListener('touchmove', (e) => {
       if (!this.holdingPaper) return;
       e.preventDefault(); // Prevents page scroll while dragging
       const touch = e.touches[0];
@@ -81,7 +81,7 @@ class Paper {
         `translateX(${this.currentPaperX}px) translateY(${this.currentPaperY}px) rotateZ(${this.rotation}deg)`;
     }, { passive: false });
 
-    paper.addEventListener('touchstart', (e) => {
+    document.addEventListener('touchstart', (e) => {
       if (this.holdingPaper) return;
       this.holdingPaper = true;
 
@@ -97,7 +97,7 @@ class Paper {
       e.preventDefault();
     });
 
-    paper.addEventListener('touchend', () => {
+    document.addEventListener('touchend', () => {
       this.holdingPaper = false;
       this.rotating = false;
     });
