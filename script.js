@@ -135,13 +135,18 @@ updateTimer();
 document.querySelectorAll('.paper').forEach((paperEl, i) => {
   const paper = new Paper();
   paper.init(paperEl);
+  // Spread out papers so they don't overlap
   paperEl.style.top = `${40 + i * 40}px`;
   paperEl.style.left = `${40 + i * 40}px`;
 });
 
-.paper {
-  touch-action: none; /* Prevent default touch scrolling */
-  user-select: none;  /* Prevent text/image selection */
-  position: absolute; /* Ensure transform works properly */
-}
+/* Remove CSS from JS file. Place the following in a separate .css file (e.g., style.css):
+
+// Move the CSS below to style.css:
+
+// .paper {
+//   touch-action: none; /* Prevent default touch scrolling */
+//   user-select: none;  /* Prevent text/image selection */
+//   position: absolute; /* Ensure transform works properly */
+// }
 
