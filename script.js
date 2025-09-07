@@ -15,9 +15,8 @@ class Paper {
   currentPaperY = 0;
   rotating = false;
 
-
-
   init(paper) {
+    // Mouse events
     paper.addEventListener('mousemove', (e) => {
       if (!this.rotating) {
         this.mouseX = e.clientX;
@@ -48,7 +47,8 @@ class Paper {
         this.prevMouseX = this.mouseX;
         this.prevMouseY = this.mouseY;
 
-        paper.style.transform = `translateX(${this.currentPaperX}px) translateY(${this.currentPaperY}px) rotateZ(${this.rotation}deg)`;
+        paper.style.transform =
+          `translateX(${this.currentPaperX}px) translateY(${this.currentPaperY}px) rotateZ(${this.rotation}deg)`;
       }
     });
 
@@ -76,9 +76,9 @@ class Paper {
     });
 
     // Touch events for mobile devices
-    paper.addEventListener('touchmove', (e) => {
+    document.addEventListener('touchmove', (e) => {
       if (!this.holdingPaper) return;
-      e.preventDefault();
+      e.preventDefault(); // Prevents page scroll while dragging
       const touch = e.touches[0];
       this.mouseX = touch.clientX;
       this.mouseY = touch.clientY;
@@ -93,8 +93,9 @@ class Paper {
       this.prevMouseX = this.mouseX;
       this.prevMouseY = this.mouseY;
 
-      paper.style.transform = `translateX(${this.currentPaperX}px) translateY(${this.currentPaperY}px) rotateZ(${this.rotation}deg)`;
-    });
+      paper.style.transform =
+        `translateX(${this.currentPaperX}px) translateY(${this.currentPaperY}px) rotateZ(${this.rotation}deg)`;
+    }, { passive: false });
 
     paper.addEventListener('touchstart', (e) => {
       if (this.holdingPaper) return;
@@ -138,8 +139,7 @@ function updateTimer() {
   const timerEl = document.getElementById('timer');
   if (timerEl) {
     timerEl.textContent =
-      `${days} days, ${hours} hours, ${minutes} minutes,
-       ${seconds} seconds`;
+      `${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`;
   }
 }
 
