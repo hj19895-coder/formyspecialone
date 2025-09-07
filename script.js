@@ -93,6 +93,8 @@ class Paper {
       this.mouseTouchY = touch.clientY;
       this.prevMouseX = touch.clientX;
       this.prevMouseY = touch.clientY;
+
+      e.preventDefault();
     });
 
     paper.addEventListener('touchend', () => {
@@ -136,4 +138,10 @@ document.querySelectorAll('.paper').forEach((paperEl, i) => {
   paperEl.style.top = `${40 + i * 40}px`;
   paperEl.style.left = `${40 + i * 40}px`;
 });
+
+.paper {
+  touch-action: none; /* Prevent default touch scrolling */
+  user-select: none;  /* Prevent text/image selection */
+  position: absolute; /* Ensure transform works properly */
+}
 
