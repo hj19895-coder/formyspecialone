@@ -53,3 +53,32 @@ document.querySelectorAll(".paper").forEach(paper => {
   document.addEventListener("mouseup", stopDrag);
   document.addEventListener("touchend", stopDrag);
 });
+
+
+// Timer code outside the Paper class
+var startDate = new Date('2023-08-01T00:00:00'); // Change to your date
+
+function updateTimer() {
+  const now = new Date();
+  let diff = now - startDate;
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  diff -= days * (1000 * 60 * 60 * 24);
+
+  const hours = Math.floor(diff / (1000 * 60 * 60));
+  diff -= hours * (1000 * 60 * 60);
+
+  const minutes = Math.floor(diff / (1000 * 60));
+  diff -= minutes * (1000 * 60);
+
+  const seconds = Math.floor(diff / 1000);
+
+  const timerEl = document.getElementById('timer');
+  if (timerEl) {
+    timerEl.textContent =
+      `${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`;
+  }
+}
+
+setInterval(updateTimer, 1000);
+updateTimer();
