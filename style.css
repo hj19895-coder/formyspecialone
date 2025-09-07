@@ -87,3 +87,18 @@ p {
   font-size: 50px; /* Increased font size */
   text-align: center;
 }
+
+@media (max-width: 600px) {
+  .paper .p1,
+  .paper .p2,
+  .paper .timer .p2 {
+    font-size: 40px;
+  }
+  img {
+    max-height: 200px;
+  }
+  .paper {
+    padding: 10px 10px;
+    min-width: unset;
+  }
+}
