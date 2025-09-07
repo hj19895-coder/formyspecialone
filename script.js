@@ -18,6 +18,7 @@ class Paper {
   init(paper) {
     // Mouse events
     paper.addEventListener('mousemove', (e) => {
+      if (!this.holdingPaper) return;
       if (!this.rotating) {
         this.mouseX = e.clientX;
         this.mouseY = e.clientY;
@@ -26,30 +27,15 @@ class Paper {
         this.velY = this.mouseY - this.prevMouseY;
       }
 
-      const dirX = e.clientX - this.mouseTouchX;
-      const dirY = e.clientY - this.mouseTouchY;
-      const dirLength = Math.sqrt(dirX * dirX + dirY * dirY);
-      const dirNormalizedX = dirX / dirLength;
-      const dirNormalizedY = dirY / dirLength;
-
-      const angle = Math.atan2(dirNormalizedY, dirNormalizedX);
-      let degrees = 180 * angle / Math.PI;
-      degrees = (360 + Math.round(degrees)) % 360;
-      if (this.rotating) {
-        this.rotation = degrees;
+      if (!this.rotating) {
+        this.currentPaperX += this.velX;
+        this.currentPaperY += this.velY;
       }
+      this.prevMouseX = this.mouseX;
+      this.prevMouseY = this.mouseY;
 
-      if (this.holdingPaper) {
-        if (!this.rotating) {
-          this.currentPaperX += this.velX;
-          this.currentPaperY += this.velY;
-        }
-        this.prevMouseX = this.mouseX;
-        this.prevMouseY = this.mouseY;
-
-        paper.style.transform =
-          `translateX(${this.currentPaperX}px) translateY(${this.currentPaperY}px) rotateZ(${this.rotation}deg)`;
-      }
+      paper.style.transform =
+        `translateX(${this.currentPaperX}px) translateY(${this.currentPaperY}px) rotateZ(${this.rotation}deg)`;
     });
 
     paper.addEventListener('mousedown', (e) => {
@@ -59,12 +45,11 @@ class Paper {
       paper.style.zIndex = highestZ;
       highestZ += 1;
 
-      if (e.button === 0) {
-        this.mouseTouchX = this.mouseX;
-        this.mouseTouchY = this.mouseY;
-        this.prevMouseX = this.mouseX;
-        this.prevMouseY = this.mouseY;
-      }
+      this.mouseTouchX = e.clientX;
+      this.mouseTouchY = e.clientY;
+      this.prevMouseX = e.clientX;
+      this.prevMouseY = e.clientY;
+
       if (e.button === 2) {
         this.rotating = true;
       }
@@ -76,7 +61,7 @@ class Paper {
     });
 
     // Touch events for mobile devices
-    document.addEventListener('touchmove', (e) => {
+    paper.addEventListener('touchmove', (e) => {
       if (!this.holdingPaper) return;
       e.preventDefault(); // Prevents page scroll while dragging
       const touch = e.touches[0];
@@ -86,10 +71,9 @@ class Paper {
       this.velX = this.mouseX - this.prevMouseX;
       this.velY = this.mouseY - this.prevMouseY;
 
-      if (!this.rotating) {
-        this.currentPaperX += this.velX;
-        this.currentPaperY += this.velY;
-      }
+      this.currentPaperX += this.velX;
+      this.currentPaperY += this.velY;
+
       this.prevMouseX = this.mouseX;
       this.prevMouseY = this.mouseY;
 
@@ -111,14 +95,14 @@ class Paper {
       this.prevMouseY = touch.clientY;
     });
 
-    window.addEventListener('touchend', () => {
+    paper.addEventListener('touchend', () => {
       this.holdingPaper = false;
       this.rotating = false;
     });
   }
 }
 
-// Timer code moved outside the Paper class
+// Timer code outside the Paper class
 var startDate = new Date('2023-08-01T00:00:00'); // Change to your date
 
 function updateTimer() {
